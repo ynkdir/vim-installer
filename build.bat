@@ -70,6 +70,8 @@ exit /b
     unzip -d gettext %archive1%
     unzip -d gettext %archive2%
   )
+  exit /b
+
 
 :ICONV
   rem set archive=libiconv-1.9.1.bin.woe32.zip
