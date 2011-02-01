@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+  TODO: all user, per user?
+-->
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+
+  <!-- require $(env.VER_FULL) -->
+
+  <?define ProductVersion = "$(env.VER_FULL)"?>
+
+  <!-- FIXME: Add version number? -->
+  <?define ProductName = "Vim"?>
+
+  <Product
+    Id='*'
+    UpgradeCode='1BE1251B-E89C-D54B-A192-7617BE4014E1'
+    Language='1041'
+    Codepage='932'
+    Version='$(var.ProductVersion)'
+    Name='$(var.ProductName)'
+    Manufacturer='Vim Developers'
+    >
+
+    <Package Id="*" Compressed='yes' />
+
+    <!-- All product having same UpgradeCode will be overridden. -->
+    <MajorUpgrade AllowDowngrades="yes" />
+
+    <Property Id="ARPCOMMENTS">Vi Improved - A Text Editor</Property>
+    <Property Id="ARPURLINFOABOUT">http://www.vim.org/</Property>
+    <Property Id="ARPPRODUCTICON">vim.ico</Property>
+
+    <Icon Id="vim.ico" SourceFile="vim\src\vim.ico" />
+
+    <Media Id='1' Cabinet='product.cab' EmbedCab='yes' CompressionLevel="high" />
+
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='ProgramFilesFolder'>
+        <Directory Id='INSTALLDIR' Name='$(var.ProductName)'>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="$(var.ProductName)">
+        </Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" />
+    </Directory>
+
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="Config" Guid="528F0FC8-61D6-8446-B9D8-7D8BD358E153">
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]\install' Name="installpath" Type="string" Value="[INSTALLDIR]" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="PathEnv" Guid="147EA001-A6FF-6146-BACB-86277994D96B">
+        <Condition>INSTALLPATHENVIRONMENT</Condition>
+        <Environment Id='UpdatePath' Name='PATH' Action='set' Permanent='no' System='yes' Part='last' Value='[INSTALLDIR]' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]\install' Name="path_environment" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="ShellContextMenu" Guid="67D164CC-DC64-4545-9AA7-3BEA629FFA3F">
+        <Condition>INSTALLSHELLCONTEXTMENU</Condition>
+        <RegistryKey Root="HKCR" Key="*\shell\[ProductName]">
+          <RegistryValue Type="string" Value='Open With [ProductName]' />
+          <!-- FIXME: Is it possible to set icon to context menu?
+          <RegistryValue Name="Icon" Type="string" Value='[INSTALLDIR]gvim.exe' />
+          -->
+          <RegistryKey Key="command">
+            <RegistryValue Type="string" Value='"[INSTALLDIR]gvim.exe" "%1"' />
+          </RegistryKey>
+        </RegistryKey>
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]\install' Name="contextmenu" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="StartMenuShortcut" Guid="538BB2EB-05F2-E042-879A-7992638CB319">
+        <Condition>INSTALLSTARTMENUSHORTCUT</Condition>
+        <Shortcut Id="StartMenuShortcut1" Name="GVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
+        <RemoveFolder Id='ApplicationProgramsFolder' On='uninstall' />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]\install' Name="startmenu_shortcut" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="DesktopShortcut" Guid="F07119B3-1959-A44D-BEC7-94B4EAA2B57B">
+        <Condition>INSTALLDESKTOPSHORTCUT</Condition>
+        <Shortcut Id="DesktopShortcut1" Name="GVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
+        <RegistryValue Root='HKCU' Key='Software\[Manufacturer]\[ProductName]\install' Name="desktop_shortcut" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <Feature Id='Complete' Title='Vim' Description='Vim' Display='expand' Level='1' ConfigurableDirectory='INSTALLDIR'>
+      <Feature Id="fMainFiles" Title="Main Files" Description="Main Files"  Level="1">
+        <ComponentGroupRef Id='MainFiles' />
+        <ComponentRef Id="Config" />
+      </Feature>
+      <Feature Id="fPathEnv" Title="PATH Environment" Description="PATH Environment" Level="1">
+        <ComponentRef Id="PathEnv" />
+      </Feature>
+      <Feature Id="fStartMenuShortcut" Title="Start Menu Shortcut" Description="Start Menu Shortcut" Level="1">
+        <ComponentRef Id="StartMenuShortcut" />
+      </Feature>
+      <Feature Id="fDesktopShortcut" Title="Desktop Shortcut" Description="Desktop Shortcut" Level="1">
+        <ComponentRef Id="DesktopShortcut" />
+      </Feature>
+      <Feature Id="ShellContextMenu" Title="Shell Context Menu" Description="Shell Context Menu" Level="1">
+        <ComponentRef Id="ShellContextMenu" />
+      </Feature>
+    </Feature>
+
+    <WixVariable Id="WixUIBannerBmp" Value="bitmaps\bannrbmp.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="bitmaps\dlgbmp.bmp" />
+    <WixVariable Id="WixUILicenseRtf" Value="vimlicense.rtf" />
+
+    <Property Id="INSTALLDIR" Secure="yes">
+      <RegistrySearch Id="RegSearchOldInstallPath" Root="HKCU" Key="Software\[Manufacturer]\[ProductName]\install" Name="installpath" Type="raw" />
+    </Property>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+
+    <UIRef Id="MyWixUI_InstallDir" />
+    <UIRef Id="WixUI_ErrorProgressText" />
+
+    <CustomAction Id="ReplaceConfirmAction" Script="vbscript">
+      <![CDATA[
+      MsgBox "別のバージョンがインストールされています。インストールを継続すると現在インストールされているバージョンは上書きされます。", 0, "Vim セットアップ"
+      ]]>
+    </CustomAction>
+
+    <!--
+      FIXME: Use trick to make checkbox checked default and restore it
+      by registry value.  To uncheck checkbox, unset its related
+      property by setting formatted text "{}" after registry is loaded.
+    -->
+    <Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
+    <Property Id="INSTALLSTARTMENUSHORTCUT" Value="1" />
+    <Property Id="INSTALLSHELLCONTEXTMENU" Value="1" />
+    <Property Id="INSTALLPATHENVIRONMENT" Value="1" />
+    <Property Id="CFGINSTALLDESKTOPSHORTCUT" Secure="yes">
+      <RegistrySearch Id="RegSearchInstallDesktopShortcut" Root="HKCU" Key="Software\[Manufacturer]\[ProductName]\install" Name="desktop_shortcut" Type="raw" />
+    </Property>
+    <Property Id="CFGINSTALLSTARTMENUSHORTCUT" Secure="yes">
+      <RegistrySearch Id="RegSearchInstallStartMenuShortcut" Root="HKCU" Key="Software\[Manufacturer]\[ProductName]\install" Name="startmenu_shortcut" Type="raw" />
+    </Property>
+    <Property Id="CFGINSTALLSHELLCONTEXTMENU" Secure="yes">
+      <RegistrySearch Id="RegSearchInstallShellContextMenu" Root="HKCU" Key="Software\[Manufacturer]\[ProductName]\install" Name="contextmenu" Type="raw" />
+    </Property>
+    <Property Id="CFGINSTALLPATHENVIRONMENT" Secure="yes">
+      <RegistrySearch Id="RegSearchInstallPathEnvironment" Root="HKCU" Key="Software\[Manufacturer]\[ProductName]\install" Name="path_environment" Type="raw" />
+    </Property>
+    <CustomAction Id="ResetDesktopShortcut" Property="INSTALLDESKTOPSHORTCUT" Value="{}" />
+    <CustomAction Id="ResetStartMenuShortcut" Property="INSTALLSTARTMENUSHORTCUT" Value="{}" />
+    <CustomAction Id="ResetShellContextMenu" Property="INSTALLSHELLCONTEXTMENU" Value="{}" />
+    <CustomAction Id="ResetPathEnvironment" Property="INSTALLPATHENVIRONMENT" Value="{}" />
+
+    <UI>
+      <InstallUISequence>
+        <Custom Action="ReplaceConfirmAction" After="FindRelatedProducts">WIX_UPGRADE_DETECTED</Custom>
+        <Custom Action="ResetDesktopShortcut" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLDESKTOPSHORTCUT</Custom>
+        <Custom Action="ResetStartMenuShortcut" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLSTARTMENUSHORTCUT</Custom>
+        <Custom Action="ResetShellContextMenu" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLSHELLCONTEXTMENU</Custom>
+        <Custom Action="ResetPathEnvironment" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLPATHENVIRONMENT</Custom>
+      </InstallUISequence>
+    </UI>
+
+  </Product>
+</Wix>
