@@ -102,11 +102,30 @@ exit /b
 
 
 :WIX
+  REM [Automation Interface Reference]
+  REM http://msdn.microsoft.com/en-us/library/aa367810%28v=VS.85%29.aspx
+  REM [Multi-Language MSI Packages without Setup.exe Launcher]
+  REM http://www.installsite.org/pages/en/msi/articles/embeddedlang/index.htm
+
   vim\src\vim -u versiondump.vim
   call version.bat
+
+  SET SRCS=vim.wxs filelist.wxs MyWixUI_InstallDir.wxs ShortcutDlg.wxs
+  SET OBJS=vim.wixobj filelist.wixobj MyWixUI_InstallDir.wixobj ShortcutDlg.wixobj
+  SET TARGET=vim-%VER_NAME%.msi
+
   heat dir dist -nologo -dr INSTALLDIR -cg MainFiles -ag -srd -sfrag -sreg -var var.dist -out filelist.wxs
-  candle.exe -nologo -ddist=dist -dcodepage=932 vim.wxs filelist.wxs MyWixUI_InstallDir.wxs ShortcutDlg.wxs
-  light.exe -nologo -ext WixUIExtension -cultures:ja-jp -loc loc_ja-jp.wxl -out vim-%VER_NAME%.msi -sw1076 vim.wixobj filelist.wixobj MyWixUI_InstallDir.wixobj ShortcutDlg.wixobj
+
+  candle.exe -nologo -ddist=dist -dlang=1033 -dcodepage=1252 %SRCS%
+  light.exe -nologo -ext WixUIExtension -cultures:en-us -loc loc_en-us.wxl -out %TARGET% -sw1076 %OBJS%
+
+  candle.exe -nologo -ddist=dist -dlang=1041 -dcodepage=932 %SRCS%
+  light.exe -nologo -ext WixUIExtension -cultures:ja-jp -loc loc_ja-jp.wxl -out ja-jp.msi -sw1076 %OBJS%
+  torch.exe -nologo -p -t language %TARGET% ja-jp.msi -out ja-jp.mst
+
+  cscript //nologo msiscripts\WiSubStg.vbs %TARGET% ja-jp.mst 1041
+  cscript //nologo msiscripts\WiLangId.vbs %TARGET% Package 1033,1041
+
   exit /b
 
 
