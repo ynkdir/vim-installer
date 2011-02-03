@@ -14,8 +14,8 @@
   <Product
     Id='*'
     UpgradeCode='1BE1251B-E89C-D54B-A192-7617BE4014E1'
-    Language='1041'
-    Codepage='932'
+    Language='1033'
+    Codepage='$(var.codepage)'
     Version='$(var.ProductVersion)'
     Name='$(var.ProductName)'
     Manufacturer='Vim Developers'

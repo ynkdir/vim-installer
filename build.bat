@@ -105,7 +105,7 @@ exit /b
   vim\src\vim -u versiondump.vim
   call version.bat
   heat dir dist -nologo -dr INSTALLDIR -cg MainFiles -ag -srd -sfrag -sreg -var var.dist -out filelist.wxs
-  candle.exe -nologo -ddist=dist vim.wxs filelist.wxs MyWixUI_InstallDir.wxs ShortcutDlg.wxs
+  candle.exe -nologo -ddist=dist -dcodepage=932 vim.wxs filelist.wxs MyWixUI_InstallDir.wxs ShortcutDlg.wxs
   light.exe -nologo -ext WixUIExtension -cultures:ja-jp -loc loc_ja-jp.wxl -out vim-%VER_NAME%.msi -sw1076 vim.wixobj filelist.wixobj MyWixUI_InstallDir.wixobj ShortcutDlg.wixobj
   exit /b
 
