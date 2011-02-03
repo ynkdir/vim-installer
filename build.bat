@@ -7,11 +7,6 @@ REM   Windows Installer XML (WiX) toolset
 REM     http://wix.sourceforge.net/
 REM   Mercurial
 REM     http://mercurial.selenic.com/
-REM   Wget
-REM     http://www.gnu.org/software/wget/
-REM   Unzip
-REM     http://www.info-zip.org/UnZip.html
-REM     ftp://ftp.info-zip.org/pub/infozip/win32/unz600xn.exe
 
 setlocal
 
@@ -21,6 +16,8 @@ exit /b
 
 :CONFIG
   REM TODO
+  SET wget=cscript //nologo scripts\httpget.js
+  SET unzip=cscript //nologo scripts\unzip.js
   exit /b
 
 
@@ -61,14 +58,14 @@ exit /b
   set archive1=gettext-tools-dev_0.18.1.1-2_win32.zip
   set archive2=gettext-runtime_0.18.1.1-2_win32.zip
   if not exist %archive1% (
-    wget "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/%archive1%"
+    %wget% "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/%archive1%"
   )
   if not exist %archive2% (
-    wget "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/%archive2%"
+    %wget% "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/%archive2%"
   )
   if not exist gettext (
-    unzip -d gettext %archive1%
-    unzip -d gettext %archive2%
+    %unzip% -d gettext %archive1%
+    %unzip% -d gettext %archive2%
   )
   exit /b
 
@@ -77,10 +74,10 @@ exit /b
   rem set archive=libiconv-1.9.1.bin.woe32.zip
   set archive=win-iconv-dll_tml-20100912_win32.zip
   if not exist %archive% (
-    wget "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/%archive%"
+    %wget% "http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/%archive%"
   )
   if not exist iconv (
-    unzip -d iconv %archive%
+    %unzip% -d iconv %archive%
   )
   exit /b
 
