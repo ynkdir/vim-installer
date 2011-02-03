@@ -125,11 +125,22 @@
     <UIRef Id="MyWixUI_InstallDir" />
     <UIRef Id="WixUI_ErrorProgressText" />
 
-    <CustomAction Id="ReplaceConfirmAction" Script="vbscript">
+
+    <Property Id="MyScript">
       <![CDATA[
-      MsgBox "別のバージョンがインストールされています。インストールを継続すると現在インストールされているバージョンは上書きされます。", 0, "Vim セットアップ"
+      Function Rec(msg)
+        Set oRec = Installer.CreateRecord(0)
+        oRec.StringData(0) = msg
+        Set Rec = oRec
+      End Function
+      Function UpgradeWarning()
+        msg = Session.FormatRecord(Rec("!(loc.UpgradeWarning)"))
+        Session.Message &H03000000, Rec(msg)
+      End Function
       ]]>
-    </CustomAction>
+    </Property>
+
+    <CustomAction Id="UpgradeWarning" Property="MyScript" VBScriptCall="UpgradeWarning" />
 
     <!--
       FIXME: Use trick to make checkbox checked default and restore it
@@ -159,7 +170,7 @@
 
     <UI>
       <InstallUISequence>
-        <Custom Action="ReplaceConfirmAction" After="FindRelatedProducts">WIX_UPGRADE_DETECTED</Custom>
+        <Custom Action="UpgradeWarning" After="FindRelatedProducts">WIX_UPGRADE_DETECTED</Custom>
         <Custom Action="ResetDesktopShortcut" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLDESKTOPSHORTCUT</Custom>
         <Custom Action="ResetStartMenuShortcut" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLSTARTMENUSHORTCUT</Custom>
         <Custom Action="ResetShellContextMenu" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLSHELLCONTEXTMENU</Custom>
