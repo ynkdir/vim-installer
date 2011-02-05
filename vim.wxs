@@ -74,7 +74,7 @@
 
     <DirectoryRef Id="INSTALLDIR">
       <Component Id="Config" Guid="528F0FC8-61D6-8446-B9D8-7D8BD358E153">
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="installpath" Type="string" Value="[INSTALLDIR]" KeyPath="yes" />
+        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="installdir" Type="string" Value="[INSTALLDIR]" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
@@ -82,7 +82,7 @@
       <Component Id="PathEnv" Guid="147EA001-A6FF-6146-BACB-86277994D96B">
         <Condition>INSTALLPATHENVIRONMENT</Condition>
         <Environment Id='UpdatePath' Name='PATH' Action='set' Permanent='no' System='yes' Part='last' Value='[INSTALLDIR]' />
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="path_environment" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="path_environment" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
@@ -98,7 +98,7 @@
             <RegistryValue Type="string" Value='"[INSTALLDIR]gvim.exe" "%1"' />
           </RegistryKey>
         </RegistryKey>
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="contextmenu" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="contextmenu" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
@@ -107,7 +107,7 @@
         <Condition>INSTALLSTARTMENUSHORTCUT</Condition>
         <Shortcut Id="StartMenuShortcut1" Name="GVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
         <RemoveFolder Id='ApplicationProgramsFolder' On='uninstall' />
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="startmenu_shortcut" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="startmenu_shortcut" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
@@ -115,7 +115,7 @@
       <Component Id="DesktopShortcut" Guid="F07119B3-1959-A44D-BEC7-94B4EAA2B57B">
         <Condition>INSTALLDESKTOPSHORTCUT</Condition>
         <Shortcut Id="DesktopShortcut1" Name="GVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="desktop_shortcut" Type="integer" Value="1" KeyPath="yes" />
+        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="desktop_shortcut" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
@@ -143,15 +143,39 @@
     <WixVariable Id="WixUIDialogBmp" Value="bitmaps\dlgbmp.bmp" />
     <WixVariable Id="WixUILicenseRtf" Value="vimlicense.rtf" />
 
-    <Property Id="INSTALLDIR" Secure="yes">
-      <RegistrySearch Id="RegSearchOldInstallPath" Root="HKCU" Key="Software\Vim\install" Name="installpath" Type="raw" />
-    </Property>
-
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
 
     <UIRef Id="MyWixUI_InstallDir" />
     <UIRef Id="WixUI_ErrorProgressText" />
 
+    <Property Id="OLDINSTALLDIR" Value="NOTFOUND">
+      <RegistrySearch Id="RegSearchOldInstallPath" Root="HKCU" Key="Software\Vim\install" Name="installdir" Type="raw" />
+    </Property>
+    <SetProperty Id="INSTALLDIR" Value="[OLDINSTALLDIR]" After="AppSearch"><![CDATA[WIX_UPGRADE_DETECTED AND OLDINSTALLDIR <> "NOTFOUND"]]></SetProperty>
+
+    <Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
+    <Property Id="OLDINSTALLDESKTOPSHORTCUT" Value="NOTFOUND">
+      <RegistrySearch Id="RegSearchInstallDesktopShortcut" Root="HKCU" Key="Software\Vim\install" Name="desktop_shortcut" Type="raw" />
+    </Property>
+    <SetProperty Id="INSTALLDESKTOPSHORTCUT" Value="{}" After="AppSearch"><![CDATA[WIX_UPGRADE_DETECTED AND OLDINSTALLDESKTOPSHORTCUT = "NOTFOUND"]]></SetProperty>
+
+    <Property Id="INSTALLSTARTMENUSHORTCUT" Value="1" />
+    <Property Id="OLDINSTALLSTARTMENUSHORTCUT" Value="NOTFOUND">
+      <RegistrySearch Id="RegSearchInstallStartMenuShortcut" Root="HKCU" Key="Software\Vim\install" Name="startmenu_shortcut" Type="raw" />
+    </Property>
+    <SetProperty Id="INSTALLSTARTMENUSHORTCUT" Value="{}" After="AppSearch"><![CDATA[WIX_UPGRADE_DETECTED AND OLDINSTALLSTARTMENUSHORTCUT = "NOTFOUND"]]></SetProperty>
+
+    <Property Id="INSTALLSHELLCONTEXTMENU" Value="1" />
+    <Property Id="OLDINSTALLSHELLCONTEXTMENU" Value="NOTFOUND">
+      <RegistrySearch Id="RegSearchInstallShellContextMenu" Root="HKCU" Key="Software\Vim\install" Name="contextmenu" Type="raw" />
+    </Property>
+    <SetProperty Id="INSTALLSHELLCONTEXTMENU" Value="{}" After="AppSearch"><![CDATA[WIX_UPGRADE_DETECTED AND OLDINSTALLSHELLCONTEXTMENU = "NOTFOUND"]]></SetProperty>
+
+    <Property Id="INSTALLPATHENVIRONMENT" Value="1" />
+    <Property Id="OLDINSTALLPATHENVIRONMENT" Value="NOTFOUND">
+      <RegistrySearch Id="RegSearchInstallPathEnvironment" Root="HKCU" Key="Software\Vim\install" Name="path_environment" Type="raw" />
+    </Property>
+    <SetProperty Id="INSTALLPATHENVIRONMENT" Value="{}" After="AppSearch"><![CDATA[WIX_UPGRADE_DETECTED AND OLDINSTALLPATHENVIRONMENT = "NOTFOUND"]]></SetProperty>
 
     <Property Id="MyScript">
       <![CDATA[
@@ -169,39 +193,9 @@
 
     <CustomAction Id="UpgradeWarning" Property="MyScript" VBScriptCall="UpgradeWarning" />
 
-    <!--
-      FIXME: Use trick to make checkbox checked default and restore it
-      by registry value.  To uncheck checkbox, unset its related
-      property by setting formatted text "{}" after registry is loaded.
-    -->
-    <Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
-    <Property Id="INSTALLSTARTMENUSHORTCUT" Value="1" />
-    <Property Id="INSTALLSHELLCONTEXTMENU" Value="1" />
-    <Property Id="INSTALLPATHENVIRONMENT" Value="1" />
-    <Property Id="CFGINSTALLDESKTOPSHORTCUT" Secure="yes">
-      <RegistrySearch Id="RegSearchInstallDesktopShortcut" Root="HKCU" Key="Software\Vim\install" Name="desktop_shortcut" Type="raw" />
-    </Property>
-    <Property Id="CFGINSTALLSTARTMENUSHORTCUT" Secure="yes">
-      <RegistrySearch Id="RegSearchInstallStartMenuShortcut" Root="HKCU" Key="Software\Vim\install" Name="startmenu_shortcut" Type="raw" />
-    </Property>
-    <Property Id="CFGINSTALLSHELLCONTEXTMENU" Secure="yes">
-      <RegistrySearch Id="RegSearchInstallShellContextMenu" Root="HKCU" Key="Software\Vim\install" Name="contextmenu" Type="raw" />
-    </Property>
-    <Property Id="CFGINSTALLPATHENVIRONMENT" Secure="yes">
-      <RegistrySearch Id="RegSearchInstallPathEnvironment" Root="HKCU" Key="Software\Vim\install" Name="path_environment" Type="raw" />
-    </Property>
-    <CustomAction Id="ResetDesktopShortcut" Property="INSTALLDESKTOPSHORTCUT" Value="{}" />
-    <CustomAction Id="ResetStartMenuShortcut" Property="INSTALLSTARTMENUSHORTCUT" Value="{}" />
-    <CustomAction Id="ResetShellContextMenu" Property="INSTALLSHELLCONTEXTMENU" Value="{}" />
-    <CustomAction Id="ResetPathEnvironment" Property="INSTALLPATHENVIRONMENT" Value="{}" />
-
     <UI>
       <InstallUISequence>
         <Custom Action="UpgradeWarning" After="FindRelatedProducts">WIX_UPGRADE_DETECTED</Custom>
-        <Custom Action="ResetDesktopShortcut" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLDESKTOPSHORTCUT</Custom>
-        <Custom Action="ResetStartMenuShortcut" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLSTARTMENUSHORTCUT</Custom>
-        <Custom Action="ResetShellContextMenu" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLSHELLCONTEXTMENU</Custom>
-        <Custom Action="ResetPathEnvironment" After="AppSearch">WIX_UPGRADE_DETECTED AND NOT CFGINSTALLPATHENVIRONMENT</Custom>
       </InstallUISequence>
     </UI>
 
