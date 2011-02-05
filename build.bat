@@ -115,7 +115,12 @@ exit /b
   SET OBJS=vim.wixobj filelist.wixobj MyWixUI_InstallDir.wixobj ShortcutDlg.wixobj
   SET TARGET=vim-%VER_NAME%.msi
 
-  heat dir dist -nologo -dr INSTALLDIR -cg MainFiles -t heat.xsl -ag -srd -sfrag -sreg -var var.dist -out filelist.wxs
+  REM exclude special files from heat.
+  move dist\gvim.exe .
+
+  heat dir dist -nologo -dr INSTALLDIR -cg MainFiles -ag -srd -sfrag -sreg -var var.dist -out filelist.wxs
+
+  move gvim.exe dist
 
   candle.exe -nologo -ddist=dist -dlang=1033 -dcodepage=1252 %SRCS%
   light.exe -nologo -ext WixUIExtension -cultures:en-us -loc loc_en-us.wxl -out %TARGET% -sw1076 %OBJS%
