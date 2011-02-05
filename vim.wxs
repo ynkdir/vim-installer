@@ -73,6 +73,28 @@
     </DirectoryRef>
 
     <DirectoryRef Id="INSTALLDIR">
+      <Component Id="gvimext.dll" Guid="*">
+        <File Id="gvimext.dll" KeyPath="yes" Source="$(var.dist)\gvimext.dll">
+          <Class Id="{51EEE242-AD87-11d3-9C1E-0090278BBD99}" Description="Vim Shell Extension" Context="InprocServer32" ThreadingModel="apartment">
+          </Class>
+        </File>
+        <RegistryValue Root='HKCR' Key='*\shellex\ContextMenuHandlers\gvim' Type="string" Value="{51EEE242-AD87-11d3-9C1E-0090278BBD99}" />
+        <RegistryValue Root='HKLM' Key='Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved' Name="{51EEE242-AD87-11d3-9C1E-0090278BBD99}" Type="string" Value="Vim Shell Extension" />
+        <!-- used by gvimext.dll -->
+        <RegistryValue Root='HKLM' Key='Software\Vim\Gvim' Name="path" Type="string" Value="[INSTALLDIR]gvim.exe" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="INSTALLDIR">
+      <Component Id="OpenWithList" Guid="*">
+        <RegistryValue Root='HKCR' Key='Applications\gvim.exe\shell\edit\command' Type="string" Value='"[INSTALLDIR]gvim.exe" "%1"' KeyPath="yes" />
+        <RegistryValue Root='HKCR' Key='*\OpenWithList\gvim.exe' Type="string" Value="" />
+        <RegistryValue Root='HKCR' Key='.vim\OpenWithList\gvim.exe' Type="string" Value="" />
+        <RegistryValue Root='HKCR' Key='.htm\OpenWithList\gvim.exe' Type="string" Value="" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="INSTALLDIR">
       <Component Id="Config" Guid="528F0FC8-61D6-8446-B9D8-7D8BD358E153">
         <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="installdir" Type="string" Value="[INSTALLDIR]" KeyPath="yes" />
       </Component>
@@ -123,6 +145,8 @@
       <Feature Id="fMainFiles" Title="Main Files" Description="Main Files"  Level="1">
         <ComponentGroupRef Id='MainFiles' />
         <ComponentRef Id="gvim.exe" />
+        <ComponentRef Id="gvimext.dll" />
+        <ComponentRef Id="OpenWithList" />
         <ComponentRef Id="Config" />
       </Feature>
       <Feature Id="fPathEnv" Title="PATH Environment" Description="PATH Environment" Level="1">

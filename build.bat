@@ -96,6 +96,7 @@ exit /b
   copy vim\src\gvim.exe dist
   copy vim\src\vimrun.exe dist
   copy vim\src\xxd\xxd.exe dist
+  copy vim\src\GvimExt\gvimext.dll dist
   copy iconv\bin\iconv.dll dist
   REM TODO use -DGETTEXT_DLL=intl.dll, instead of rename.
   copy gettext\bin\intl.dll dist\libintl.dll
@@ -117,10 +118,12 @@ exit /b
 
   REM exclude special files from heat.
   move dist\gvim.exe .
+  move dist\gvimext.dll .
 
   heat dir dist -nologo -dr INSTALLDIR -cg MainFiles -ag -srd -sfrag -sreg -var var.dist -out filelist.wxs
 
   move gvim.exe dist
+  move gvimext.dll dist
 
   candle.exe -nologo -ddist=dist -dlang=1033 -dcodepage=1252 %SRCS%
   light.exe -nologo -ext WixUIExtension -cultures:en-us -loc loc_en-us.wxl -out %TARGET% -sw1076 %OBJS%
