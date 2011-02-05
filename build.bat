@@ -18,6 +18,10 @@ exit /b
   REM TODO
   SET wget=cscript //nologo scripts\httpget.js
   SET unzip=cscript //nologo scripts\unzip.js
+
+  REM compiler flag
+  SET OLE=yes
+
   exit /b
 
 
@@ -38,7 +42,7 @@ exit /b
   if exist vim.exe.manifest (
     mt -nologo -manifest vim.exe.manifest -outputresource:vim.exe;1
   )
-  nmake -f Make_mvc.mak USE_MSVCRT=1 FEATURES=HUGE MBYTE=yes GUI=yes IME=yes
+  nmake -f Make_mvc.mak USE_MSVCRT=1 FEATURES=HUGE MBYTE=yes GUI=yes IME=yes OLE=%OLE%
   if exist gvim.exe.manifest (
     mt -nologo -manifest gvim.exe.manifest -outputresource:gvim.exe;1
   )
@@ -111,7 +115,7 @@ exit /b
   SET OBJS=vim.wixobj filelist.wixobj MyWixUI_InstallDir.wixobj ShortcutDlg.wixobj
   SET TARGET=vim-%VER_NAME%.msi
 
-  heat dir dist -nologo -dr INSTALLDIR -cg MainFiles -ag -srd -sfrag -sreg -var var.dist -out filelist.wxs
+  heat dir dist -nologo -dr INSTALLDIR -cg MainFiles -t heat.xsl -ag -srd -sfrag -sreg -var var.dist -out filelist.wxs
 
   candle.exe -nologo -ddist=dist -dlang=1033 -dcodepage=1252 %SRCS%
   light.exe -nologo -ext WixUIExtension -cultures:en-us -loc loc_en-us.wxl -out %TARGET% -sw1076 %OBJS%

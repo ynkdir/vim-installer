@@ -4,7 +4,7 @@
 -->
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
 
-  <!-- require $(env.VER_FULL) -->
+  <!-- require $(env.VER_FULL) $(env.FEAT_OLE) -->
 
   <?define ProductVersion = "$(env.VER_FULL)"?>
 
@@ -107,7 +107,7 @@
       <Feature Id="fDesktopShortcut" Title="Desktop Shortcut" Description="Desktop Shortcut" Level="1">
         <ComponentRef Id="DesktopShortcut" />
       </Feature>
-      <Feature Id="ShellContextMenu" Title="Shell Context Menu" Description="Shell Context Menu" Level="1">
+      <Feature Id="fShellContextMenu" Title="Shell Context Menu" Description="Shell Context Menu" Level="1">
         <ComponentRef Id="ShellContextMenu" />
       </Feature>
     </Feature>
