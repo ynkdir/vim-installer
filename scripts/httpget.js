@@ -12,7 +12,10 @@ function httpget(url, file) {
   var xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
   xhr.open("GET", url, false);
   xhr.send();
-  if (xhr.status != 200) {
+  if (xhr.readyState != 4) {
+    throw new Error("REQUEST INCOMPLETE");
+  }
+  if (url.match(/^https?/) && xhr.status != 200) {
     throw new Error("HTTP STATUS: " + xhr.status);
   }
 
