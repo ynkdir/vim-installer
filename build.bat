@@ -97,6 +97,7 @@ exit /b
   copy vim\src\vimrun.exe dist
   copy vim\src\xxd\xxd.exe dist
   copy vim\src\GvimExt\gvimext.dll dist
+  copy vim\vimtutor.bat dist
   copy iconv\bin\iconv.dll dist
   REM TODO use -DGETTEXT_DLL=intl.dll, instead of rename.
   copy gettext\bin\intl.dll dist\libintl.dll

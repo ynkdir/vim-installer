@@ -1,12 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
 
-  <!-- require $(env.VER_FULL) $(env.FEAT_OLE) -->
+  <!-- require $(env.VER_FULL) $(env.VER_SHORT) $(env.FEAT_OLE) -->
 
   <?define ProductVersion = "$(env.VER_FULL)"?>
 
   <!-- FIXME: Add version number? -->
   <?define ProductName = "Vim"?>
+
+  <?define StartMenuName = "Vim $(env.VER_SHORT)"?>
 
   <Product
     Id='*'
@@ -37,7 +39,7 @@
         </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder">
-        <Directory Id="ApplicationProgramsFolder" Name="$(var.ProductName)">
+        <Directory Id="ApplicationProgramsFolder" Name="$(var.StartMenuName)">
         </Directory>
       </Directory>
       <Directory Id="DesktopFolder" />
@@ -103,7 +105,17 @@
 
     <DirectoryRef Id="ApplicationProgramsFolder">
       <Component Id="StartMenu" Guid="538BB2EB-05F2-E042-879A-7992638CB319">
-        <Shortcut Id="StartMenuShortcut1" Name="GVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="StartMenu1" Name="Vim" Target="[INSTALLDIR]vim.exe" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="StartMenu2" Name="Vim Read-only" Target="[INSTALLDIR]vim.exe" Arguments="-R" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="StartMenu3" Name="Vim Diff" Target="[INSTALLDIR]vim.exe" Arguments="-d" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="StartMenu4" Name="gVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="StartMenu5" Name="gVim Easy" Target="[INSTALLDIR]gvim.exe" Arguments="-y" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="StartMenu6" Name="gVim Read-only" Target="[INSTALLDIR]gvim.exe" Arguments="-R" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="StartMenu7" Name="gVim Diff" Target="[INSTALLDIR]gvim.exe" Arguments="-d" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="StartMenu8" Name="Uninstall" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" />
+        <Shortcut Id="StartMenu9" Name="Vim tutor" Target="[INSTALLDIR]vimtutor.bat" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="StartMenu10" Name="Help" Target="[INSTALLDIR]gvim.exe" Arguments="-c h" WorkingDirectory="INSTALLDIR" />
+        <IniFile Id="StartMenu11" Action="addLine" Name="Vim Online.url" Directory="ApplicationProgramsFolder" Section="InternetShortcut" Key="URL" Value="http://vim.sf.net/" />
         <RemoveFolder Id='ApplicationProgramsFolder' On='uninstall' />
         <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="install_startmenu" Type="string" Value="1" KeyPath="yes" />
       </Component>
@@ -111,7 +123,9 @@
 
     <DirectoryRef Id="DesktopFolder">
       <Component Id="DesktopShortcut" Guid="F07119B3-1959-A44D-BEC7-94B4EAA2B57B">
-        <Shortcut Id="DesktopShortcut1" Name="GVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="DesktopShortcut1" Name="gVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="DesktopShortcut2" Name="gVim Easy" Target="[INSTALLDIR]gvim.exe" Arguments="-y" WorkingDirectory="INSTALLDIR" />
+        <Shortcut Id="DesktopShortcut3" Name="gVim Read only" Target="[INSTALLDIR]gvim.exe" Arguments="-R" WorkingDirectory="INSTALLDIR" />
         <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="install_desktop_shortcut" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
