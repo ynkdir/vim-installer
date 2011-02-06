@@ -4,13 +4,13 @@
   <String Id="Feature_Complete_Title" Overridable="yes">Vim</String>
   <String Id="Feature_Complete_Description" Overridable="yes">Vi Improved - A Text Editor</String>
   <String Id="Feature_StartMenu_Title" Overridable="yes">スタートメニュー</String>
-  <String Id="Feature_StartMenu_Description" Overridable="yes">スタートメニューに Vim を追加します。</String>
+  <String Id="Feature_StartMenu_Description" Overridable="yes">スタートメニューに Vim を追加する。</String>
   <String Id="Feature_DesktopShortcut_Title" Overridable="yes">デスクトップアイコン</String>
-  <String Id="Feature_DesktopShortcut_Description" Overridable="yes">デスクトップにアイコンを作成します。</String>
+  <String Id="Feature_DesktopShortcut_Description" Overridable="yes">デスクトップにアイコンを作成する。</String>
   <String Id="Feature_Popup_Title" Overridable="yes">コンテキストメニュー</String>
-  <String Id="Feature_Popup_Description" Overridable="yes">"Vimで開く" コンテキストメニューをインストールします。</String>
+  <String Id="Feature_Popup_Description" Overridable="yes">"Vimで開く" コンテキストメニューをインストールする。</String>
   <String Id="Feature_OpenWith_TItle" Overridable="yes">"プログラムから開く" に追加</String>
-  <String Id="Feature_OpenWith_Description" Overridable="yes">"プログラムから開く" コンテキストメニューに Vim を追加します。</String>
+  <String Id="Feature_OpenWith_Description" Overridable="yes">"プログラムから開く" コンテキストメニューに Vim を追加する。</String>
   <String Id="Feature_PathEnvironment_Title" Overridable="yes">PATH 環境変数</String>
-  <String Id="Feature_PathEnvironment_Description" Overridable="yes">Vim のディレクトリを PATH 環境変数に追加します。</String>
+  <String Id="Feature_PathEnvironment_Description" Overridable="yes">Vim のディレクトリを PATH 環境変数に追加する。</String>
 </WixLocalization>
