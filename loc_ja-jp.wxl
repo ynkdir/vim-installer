@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WixLocalization Culture="ja-jp" Codepage="932" xmlns="http://schemas.microsoft.com/wix/2006/localization">
   <String Id="UpgradeWarning" Overridable="yes">別のバージョンがインストールされています。インストールを継続すると現在インストールされているバージョンは上書きされます。</String>
-  <String Id="ShortcutDlg_Title" Overridable="yes">[ProductName] セットアップ</String>
-  <String Id="ShortcutDlg_Subtitle" Overridable="yes">ショートカットを作成</String>
-  <String Id="ShortcutDlg_Description" Overridable="yes">プログラムアイコンを作成</String>
-  <String Id="ShortcutDlg_IconPlace" Overridable="yes">[ProductName] アイコンの作成先:</String>
-  <String Id="ShortcutDlg_Desktop" Overridable="yes">デスクトップ(&amp;D)</String>
-  <String Id="ShortcutDlg_StartMenu" Overridable="yes">スタートメニューのプログラムフォルダ(&amp;S)</String>
-  <String Id="ShortcutDlg_ContextMenu" Overridable="yes">Open With Vim コンテキストメニュー(&amp;C)</String>
-  <String Id="ShortcutDlg_PathEnvironment" Overridable="yes">インストールディレクトリを環境変数(%PATH%)に追加(&amp;P)</String>
+  <String Id="Feature_Complete_Title" Overridable="yes">Vim</String>
+  <String Id="Feature_Complete_Description" Overridable="yes">Vi Improved - A Text Editor</String>
+  <String Id="Feature_StartMenu_Title" Overridable="yes">スタートメニュー</String>
+  <String Id="Feature_StartMenu_Description" Overridable="yes">スタートメニューに Vim を追加します。</String>
+  <String Id="Feature_DesktopShortcut_Title" Overridable="yes">デスクトップアイコン</String>
+  <String Id="Feature_DesktopShortcut_Description" Overridable="yes">デスクトップにアイコンを作成します。</String>
+  <String Id="Feature_Popup_Title" Overridable="yes">コンテキストメニュー</String>
+  <String Id="Feature_Popup_Description" Overridable="yes">"Vimで開く" コンテキストメニューをインストールします。</String>
+  <String Id="Feature_OpenWith_TItle" Overridable="yes">"プログラムから開く" に追加</String>
+  <String Id="Feature_OpenWith_Description" Overridable="yes">"プログラムから開く" コンテキストメニューに Vim を追加します。</String>
+  <String Id="Feature_PathEnvironment_Title" Overridable="yes">PATH 環境変数</String>
+  <String Id="Feature_PathEnvironment_Description" Overridable="yes">Vim のディレクトリを PATH 環境変数に追加します。</String>
 </WixLocalization>

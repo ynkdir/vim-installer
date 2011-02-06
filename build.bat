@@ -112,8 +112,8 @@ exit /b
   vim\src\vim -u versiondump.vim
   call version.bat
 
-  SET SRCS=vim.wxs filelist.wxs MyWixUI_InstallDir.wxs ShortcutDlg.wxs
-  SET OBJS=vim.wixobj filelist.wixobj MyWixUI_InstallDir.wixobj ShortcutDlg.wixobj
+  SET SRCS=vim.wxs filelist.wxs
+  SET OBJS=vim.wixobj filelist.wixobj
   SET TARGET=vim-%VER_NAME%.msi
 
   REM exclude special files from heat.

@@ -2,12 +2,16 @@
 <!-- FIXME: english -->
 <WixLocalization Culture="en-us" Codepage="1252" xmlns="http://schemas.microsoft.com/wix/2006/localization">
   <String Id="UpgradeWarning" Overridable="yes">Different version is installed.  This installation will replace it.</String>
-  <String Id="ShortcutDlg_Title" Overridable="yes">[ProductName] Setup</String>
-  <String Id="ShortcutDlg_Subtitle" Overridable="yes">Set Up Shortcut</String>
-  <String Id="ShortcutDlg_Description" Overridable="yes">Create program icons</String>
-  <String Id="ShortcutDlg_IconPlace" Overridable="yes">Create icons for [ProductName]:</String>
-  <String Id="ShortcutDlg_Desktop" Overridable="yes">On my Desktop(&amp;D)</String>
-  <String Id="ShortcutDlg_StartMenu" Overridable="yes">In my Start Menu Programs folder(&amp;S)</String>
-  <String Id="ShortcutDlg_ContextMenu" Overridable="yes">Right Click Context Menu(&amp;C)</String>
-  <String Id="ShortcutDlg_PathEnvironment" Overridable="yes">Add install directory to PATH environment variable(&amp;P)</String>
+  <String Id="Feature_Complete_Title" Overridable="yes">Vim</String>
+  <String Id="Feature_Complete_Description" Overridable="yes">Vi Improved - A Text Editor</String>
+  <String Id="Feature_StartMenu_Title" Overridable="yes">Start Menu Shortcut</String>
+  <String Id="Feature_StartMenu_Description" Overridable="yes">Add Vim to the start menu.</String>
+  <String Id="Feature_DesktopShortcut_Title" Overridable="yes">Desktop Icon</String>
+  <String Id="Feature_DesktopShortcut_Description" Overridable="yes">Create icons for gVim executables on the desktop.</String>
+  <String Id="Feature_Popup_Title" Overridable="yes">Edit-with-Vim Context Menu</String>
+  <String Id="Feature_Popup_Description" Overridable="yes">Install the Edit-with-Vim context menu entry.</String>
+  <String Id="Feature_OpenWith_TItle" Overridable="yes">"Open With ..." Context Menu</String>
+  <String Id="Feature_OpenWith_Description" Overridable="yes">Add Vim to the "Open With..." context menu list.</String>
+  <String Id="Feature_PathEnvironment_Title" Overridable="yes">PATH Environment Variable</String>
+  <String Id="Feature_PathEnvironment_Description" Overridable="yes">Add Vim's directory to PATH environment variable.</String>
 </WixLocalization>

@@ -86,7 +86,7 @@
     </DirectoryRef>
 
     <DirectoryRef Id="INSTALLDIR">
-      <Component Id="OpenWithList" Guid="*">
+      <Component Id="OpenWith" Guid="*">
         <RegistryValue Root='HKCR' Key='Applications\gvim.exe\shell\edit\command' Type="string" Value='"[INSTALLDIR]gvim.exe" "%1"' KeyPath="yes" />
         <RegistryValue Root='HKCR' Key='*\OpenWithList\gvim.exe' Type="string" Value="" />
         <RegistryValue Root='HKCR' Key='.vim\OpenWithList\gvim.exe' Type="string" Value="" />
@@ -95,71 +95,44 @@
     </DirectoryRef>
 
     <DirectoryRef Id="INSTALLDIR">
-      <Component Id="Config" Guid="528F0FC8-61D6-8446-B9D8-7D8BD358E153">
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="installdir" Type="string" Value="[INSTALLDIR]" KeyPath="yes" />
-      </Component>
-    </DirectoryRef>
-
-    <DirectoryRef Id="INSTALLDIR">
-      <Component Id="PathEnv" Guid="147EA001-A6FF-6146-BACB-86277994D96B">
-        <Condition>INSTALLPATHENVIRONMENT</Condition>
+      <Component Id="PathEnvironment" Guid="147EA001-A6FF-6146-BACB-86277994D96B">
         <Environment Id='UpdatePath' Name='PATH' Action='set' Permanent='no' System='yes' Part='last' Value='[INSTALLDIR]' />
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="path_environment" Type="string" Value="1" KeyPath="yes" />
-      </Component>
-    </DirectoryRef>
-
-    <DirectoryRef Id="INSTALLDIR">
-      <Component Id="ShellContextMenu" Guid="67D164CC-DC64-4545-9AA7-3BEA629FFA3F">
-        <Condition>INSTALLSHELLCONTEXTMENU</Condition>
-        <RegistryKey Root="HKCR" Key="*\shell\[ProductName]">
-          <RegistryValue Type="string" Value='Open With [ProductName]' />
-          <!-- FIXME: Is it possible to set icon to context menu?
-          <RegistryValue Name="Icon" Type="string" Value='[INSTALLDIR]gvim.exe' />
-          -->
-          <RegistryKey Key="command">
-            <RegistryValue Type="string" Value='"[INSTALLDIR]gvim.exe" "%1"' />
-          </RegistryKey>
-        </RegistryKey>
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="contextmenu" Type="string" Value="1" KeyPath="yes" />
+        <RegistryValue Root='HKLM' Key='Software\Vim\install' Name="install_path_environment" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
     <DirectoryRef Id="ApplicationProgramsFolder">
-      <Component Id="StartMenuShortcut" Guid="538BB2EB-05F2-E042-879A-7992638CB319">
-        <Condition>INSTALLSTARTMENUSHORTCUT</Condition>
+      <Component Id="StartMenu" Guid="538BB2EB-05F2-E042-879A-7992638CB319">
         <Shortcut Id="StartMenuShortcut1" Name="GVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
         <RemoveFolder Id='ApplicationProgramsFolder' On='uninstall' />
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="startmenu_shortcut" Type="string" Value="1" KeyPath="yes" />
+        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="install_startmenu" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
     <DirectoryRef Id="DesktopFolder">
       <Component Id="DesktopShortcut" Guid="F07119B3-1959-A44D-BEC7-94B4EAA2B57B">
-        <Condition>INSTALLDESKTOPSHORTCUT</Condition>
         <Shortcut Id="DesktopShortcut1" Name="GVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="desktop_shortcut" Type="string" Value="1" KeyPath="yes" />
+        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="install_desktop_shortcut" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
-    <Feature Id='Complete' Title='Vim' Description='Vim' Display='expand' Level='1' ConfigurableDirectory='INSTALLDIR'>
-      <Feature Id="fMainFiles" Title="Main Files" Description="Main Files"  Level="1">
-        <ComponentGroupRef Id='MainFiles' />
-        <ComponentRef Id="gvim.exe" />
-        <ComponentRef Id="gvimext.dll" />
-        <ComponentRef Id="OpenWithList" />
-        <ComponentRef Id="Config" />
+    <Feature Id='Complete' Title='!(loc.Feature_Complete_Title)' Description='!(loc.Feature_Complete_Description)' Display='expand' Level='1' ConfigurableDirectory='INSTALLDIR'>
+      <ComponentGroupRef Id='MainFiles' />
+      <ComponentRef Id="gvim.exe" />
+      <Feature Id="StartMenu" Title="!(loc.Feature_StartMenu_Title)" Description="!(loc.Feature_StartMenu_Description)" Level="1">
+        <ComponentRef Id="StartMenu" />
       </Feature>
-      <Feature Id="fPathEnv" Title="PATH Environment" Description="PATH Environment" Level="1">
-        <ComponentRef Id="PathEnv" />
-      </Feature>
-      <Feature Id="fStartMenuShortcut" Title="Start Menu Shortcut" Description="Start Menu Shortcut" Level="1">
-        <ComponentRef Id="StartMenuShortcut" />
-      </Feature>
-      <Feature Id="fDesktopShortcut" Title="Desktop Shortcut" Description="Desktop Shortcut" Level="1">
+      <Feature Id="DesktopShortcut" Title="!(loc.Feature_DesktopShortcut_Title)" Description="!(loc.Feature_DesktopShortcut_Description)" Level="1">
         <ComponentRef Id="DesktopShortcut" />
       </Feature>
-      <Feature Id="fShellContextMenu" Title="Shell Context Menu" Description="Shell Context Menu" Level="1">
-        <ComponentRef Id="ShellContextMenu" />
+      <Feature Id="Popup" Title="!(loc.Feature_Popup_Title)" Description="!(loc.Feature_Popup_Description)" Level="1">
+        <ComponentRef Id="gvimext.dll" />
+      </Feature>
+      <Feature Id="OpenWith" Title="!(loc.Feature_OpenWith_TItle)" Description="!(loc.Feature_OpenWith_Description)" Level="1">
+        <ComponentRef Id="OpenWith" />
+      </Feature>
+      <Feature Id="PathEnvironment" Title="!(loc.Feature_PathEnvironment_Title)" Description="!(loc.Feature_PathEnvironment_Description)" Level="1">
+        <ComponentRef Id="PathEnvironment" />
       </Feature>
     </Feature>
 
@@ -167,39 +140,8 @@
     <WixVariable Id="WixUIDialogBmp" Value="bitmaps\dlgbmp.bmp" />
     <WixVariable Id="WixUILicenseRtf" Value="vimlicense.rtf" />
 
-    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
-
-    <UIRef Id="MyWixUI_InstallDir" />
+    <UIRef Id="WixUI_Mondo" />
     <UIRef Id="WixUI_ErrorProgressText" />
-
-    <Property Id="OLDINSTALLDIR" Value="NOTFOUND">
-      <RegistrySearch Id="RegSearchOldInstallPath" Root="HKCU" Key="Software\Vim\install" Name="installdir" Type="raw" />
-    </Property>
-    <SetProperty Id="INSTALLDIR" Value="[OLDINSTALLDIR]" After="AppSearch"><![CDATA[WIX_UPGRADE_DETECTED AND OLDINSTALLDIR <> "NOTFOUND"]]></SetProperty>
-
-    <Property Id="INSTALLDESKTOPSHORTCUT" Value="1" />
-    <Property Id="OLDINSTALLDESKTOPSHORTCUT" Value="NOTFOUND">
-      <RegistrySearch Id="RegSearchInstallDesktopShortcut" Root="HKCU" Key="Software\Vim\install" Name="desktop_shortcut" Type="raw" />
-    </Property>
-    <SetProperty Id="INSTALLDESKTOPSHORTCUT" Value="{}" After="AppSearch"><![CDATA[WIX_UPGRADE_DETECTED AND OLDINSTALLDESKTOPSHORTCUT = "NOTFOUND"]]></SetProperty>
-
-    <Property Id="INSTALLSTARTMENUSHORTCUT" Value="1" />
-    <Property Id="OLDINSTALLSTARTMENUSHORTCUT" Value="NOTFOUND">
-      <RegistrySearch Id="RegSearchInstallStartMenuShortcut" Root="HKCU" Key="Software\Vim\install" Name="startmenu_shortcut" Type="raw" />
-    </Property>
-    <SetProperty Id="INSTALLSTARTMENUSHORTCUT" Value="{}" After="AppSearch"><![CDATA[WIX_UPGRADE_DETECTED AND OLDINSTALLSTARTMENUSHORTCUT = "NOTFOUND"]]></SetProperty>
-
-    <Property Id="INSTALLSHELLCONTEXTMENU" Value="1" />
-    <Property Id="OLDINSTALLSHELLCONTEXTMENU" Value="NOTFOUND">
-      <RegistrySearch Id="RegSearchInstallShellContextMenu" Root="HKCU" Key="Software\Vim\install" Name="contextmenu" Type="raw" />
-    </Property>
-    <SetProperty Id="INSTALLSHELLCONTEXTMENU" Value="{}" After="AppSearch"><![CDATA[WIX_UPGRADE_DETECTED AND OLDINSTALLSHELLCONTEXTMENU = "NOTFOUND"]]></SetProperty>
-
-    <Property Id="INSTALLPATHENVIRONMENT" Value="1" />
-    <Property Id="OLDINSTALLPATHENVIRONMENT" Value="NOTFOUND">
-      <RegistrySearch Id="RegSearchInstallPathEnvironment" Root="HKCU" Key="Software\Vim\install" Name="path_environment" Type="raw" />
-    </Property>
-    <SetProperty Id="INSTALLPATHENVIRONMENT" Value="{}" After="AppSearch"><![CDATA[WIX_UPGRADE_DETECTED AND OLDINSTALLPATHENVIRONMENT = "NOTFOUND"]]></SetProperty>
 
     <Property Id="MyScript">
       <![CDATA[
