@@ -86,6 +86,17 @@ exit /b
   exit /b
 
 
+:DIFF
+  set archive="diffutils-3.0-win32.zip"
+  if not exist %archive% (
+    %wget% "https://github.com/downloads/ynkdir/vim-installer/%archive%"
+  )
+  if not exist diff (
+    %unzip% -d diff %archive%
+  )
+  exit /b
+
+
 :DIST
   robocopy /MIR vim\runtime dist
   for %%i in (vim\src\po\*.mo) do (
@@ -98,6 +109,10 @@ exit /b
   copy vim\src\xxd\xxd.exe dist
   copy vim\src\GvimExt\gvimext.dll dist
   copy vim\vimtutor.bat dist
+  copy vim\README.txt dist
+  copy vim\src\vim.pdb dist
+  copy vim\src\gvim.pdb dist
+  copy diff\bin\diff.exe dist
   copy iconv\bin\iconv.dll dist
   REM TODO use -DGETTEXT_DLL=intl.dll, instead of rename.
   copy gettext\bin\intl.dll dist\libintl.dll
@@ -143,6 +158,7 @@ exit /b
   call :CONFIG
   call :GETTEXT
   call :ICONV
+  call :DIFF
   call :UPDATE
   call :COMPILE
   call :PO
