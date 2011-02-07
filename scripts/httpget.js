@@ -9,7 +9,12 @@ var adTypeBinary = 1;
 var adTypeText = 2;
 
 function httpget(url, file) {
-  var xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+  // var xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+  // use ServerXMLHTTP for https
+  var xhr = new ActiveXObject("MSXML2.ServerXMLHTTP");
+  // FIXME: required?
+  //var SXH_SERVER_CERT_IGNORE_ALL_SERVER_ERRORS = 13056;
+  //xhr.setOption(2, SXH_SERVER_CERT_IGNORE_ALL_SERVER_ERRORS);
   xhr.open("GET", url, false);
   xhr.send();
   if (xhr.readyState != 4) {
