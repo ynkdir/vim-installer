@@ -8,14 +8,24 @@ var adSaveCreateOverWrite = 2;
 var adTypeBinary = 1;
 var adTypeText = 2;
 
+var USER_AGENT = "httpget.js/1.0";
+
 function httpget(url, file) {
-  // var xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
-  // use ServerXMLHTTP for https
-  var xhr = new ActiveXObject("MSXML2.ServerXMLHTTP");
-  // FIXME: required?
-  //var SXH_SERVER_CERT_IGNORE_ALL_SERVER_ERRORS = 13056;
-  //xhr.setOption(2, SXH_SERVER_CERT_IGNORE_ALL_SERVER_ERRORS);
+  var xhr;
+  if (url.match(/^https?:/)) {
+    // use ServerXMLHTTP for https
+    xhr = new ActiveXObject("MSXML2.ServerXMLHTTP");
+    // FIXME: required?
+    //var SXH_SERVER_CERT_IGNORE_ALL_SERVER_ERRORS = 13056;
+    //xhr.setOption(2, SXH_SERVER_CERT_IGNORE_ALL_SERVER_ERRORS);
+  } else {
+    // ServerXMLHTTP doesn't support ftp.
+    xhr = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+  }
   xhr.open("GET", url, false);
+  // For default user-agent, sourceforge's download url responds
+  // download page instead of its content.
+  xhr.setRequestHeader("User-Agent", USER_AGENT);
   xhr.send();
   if (xhr.readyState != 4) {
     throw new Error("REQUEST INCOMPLETE");
@@ -33,6 +43,7 @@ function httpget(url, file) {
 }
 
 function filename(url) {
+  url = url.replace(/[?#].*$/, "");
   if (url.match(/\/$/)) {
     return "index.html";
   }
