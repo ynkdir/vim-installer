@@ -87,7 +87,7 @@ exit /b
 
 
 :DIFF
-  set archive="diffutils-3.0-win32.zip"
+  set archive=diffutils-3.0-win32.zip
   if not exist %archive% (
     %wget% "https://github.com/downloads/ynkdir/vim-installer/%archive%"
   )
