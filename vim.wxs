@@ -2,6 +2,15 @@
 
 <!--
   FIXME: How not to mix HKCU and HKLM?
+
+  MEMO:
+    Place of shortcut (vista):
+      Per-User:
+        \Users\<user>\AppData\Roaming\Microsoft\Windows\Start Menu
+        \Users\<user>\Desktop
+      Per-Machine:
+        \ProgramData\Microsoft\Windows\Start Menu
+        \Users\Public\Desktop
 -->
 
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
@@ -137,7 +146,7 @@
         <Shortcut Id="StartMenu8" Name="Uninstall" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" />
         <Shortcut Id="StartMenu9" Name="Vim tutor" Target="[INSTALLDIR]vimtutor.bat" WorkingDirectory="INSTALLDIR" />
         <Shortcut Id="StartMenu10" Name="Help" Target="[INSTALLDIR]gvim.exe" Arguments="-c h" WorkingDirectory="INSTALLDIR" />
-        <IniFile Id="StartMenu11" Action="addLine" Name="Vim Online.url" Directory="ApplicationProgramsFolder" Section="InternetShortcut" Key="URL" Value="http://vim.sf.net/" />
+        <File Id="Vim_Online.url" Name="Vim Online.url" Source="Vim Online.url" />
         <RemoveFolder Id='ApplicationProgramsFolder' On='uninstall' />
         <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="install_startmenu" Type="string" Value="1" KeyPath="yes" />
       </Component>
