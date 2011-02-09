@@ -128,9 +128,15 @@
     </DirectoryRef>
 
     <DirectoryRef Id="INSTALLDIR">
-      <Component Id="PathEnvironment" Guid="147EA001-A6FF-6146-BACB-86277994D96B">
-        <Environment Id='UpdatePath' Name='PATH' Action='set' Permanent='no' System='yes' Part='last' Value='[INSTALLDIR]' />
-        <RegistryValue Root='HKMU' Key='Software\Vim\install' Name="install_path_environment" Type="string" Value="1" KeyPath="yes" />
+      <Component Id="PathEnvironmentSys" Guid="147EA001-A6FF-6146-BACB-86277994D96B">
+        <Condition>ALLUSERS</Condition>
+        <Environment Id='UpdatePathSys' Name='PATH' Action='set' Permanent='no' System='yes' Part='last' Value='[INSTALLDIR]' />
+        <RegistryValue Root='HKMU' Key='Software\Vim\install' Name="install_path_environment_sys" Type="string" Value="1" KeyPath="yes" />
+      </Component>
+      <Component Id="PathEnvironmentUser" Guid="D0286C9A-D752-BF47-A716-A9FF15BB6313">
+        <Condition>NOT ALLUSERS</Condition>
+        <Environment Id='UpdatePathUser' Name='PATH' Action='set' Permanent='no' System='no' Part='last' Value='[INSTALLDIR]' />
+        <RegistryValue Root='HKMU' Key='Software\Vim\install' Name="install_path_environment_user" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
@@ -179,7 +185,8 @@
         <ComponentRef Id="README_VisVim.txt" />
       </Feature>
       <Feature Id="PathEnvironment" Title="!(loc.Feature_PathEnvironment_Title)" Description="!(loc.Feature_PathEnvironment_Description)" Level="1">
-        <ComponentRef Id="PathEnvironment" />
+        <ComponentRef Id="PathEnvironmentUser" />
+        <ComponentRef Id="PathEnvironmentSys" />
       </Feature>
     </Feature>
 
