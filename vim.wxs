@@ -3,6 +3,13 @@
 <!--
   FIXME: How not to mix HKCU and HKLM?
 
+  TODO:
+    - start menu: Don't use HKCU for per-machine.
+    - desktop shortcut: Don't use HKCU for per-machine.
+    - gvimext.dll: Don't use HKLM for per-user.
+    - Restore install configuration for upgrade.
+
+
   MEMO:
     Place of shortcut (vista):
       Per-User:
