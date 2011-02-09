@@ -108,6 +108,8 @@ exit /b
   copy vim\src\vimrun.exe dist
   copy vim\src\xxd\xxd.exe dist
   copy vim\src\GvimExt\gvimext.dll dist
+  copy vim\src\VisVim\VisVim.dll dist
+  copy vim\src\VisVim\README_VisVim.txt dist
   copy vim\vimtutor.bat dist
   copy vim\README.txt dist
   copy vim\src\vim.pdb dist
@@ -135,11 +137,15 @@ exit /b
   REM exclude special files from heat.
   move dist\gvim.exe .
   move dist\gvimext.dll .
+  move dist\VisVim.dll .
+  move dist\README_VisVim.txt .
 
   heat dir dist -nologo -dr INSTALLDIR -cg MainFiles -ag -srd -sfrag -sreg -var var.dist -out filelist.wxs
 
   move gvim.exe dist
   move gvimext.dll dist
+  move VisVim.dll dist
+  move README_VisVim.txt dist
 
   candle.exe -nologo -ddist=dist -dlang=1033 -dcodepage=1252 %SRCS%
   light.exe -nologo -ext WixUIExtension -cultures:en-us -loc loc_en-us.wxl -out %TARGET% -sw1076 %OBJS%

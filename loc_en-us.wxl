@@ -5,13 +5,13 @@
   <String Id="Feature_Complete_Title" Overridable="yes">Vim</String>
   <String Id="Feature_Complete_Description" Overridable="yes">Vi Improved - A Text Editor</String>
   <String Id="Feature_StartMenu_Title" Overridable="yes">Start Menu Shortcut</String>
-  <String Id="Feature_StartMenu_Description" Overridable="yes">Add Vim to the start menu.</String>
+  <String Id="Feature_StartMenu_Description" Overridable="yes">Add Vim to the Start Menu.</String>
   <String Id="Feature_DesktopShortcut_Title" Overridable="yes">Desktop Icon</String>
-  <String Id="Feature_DesktopShortcut_Description" Overridable="yes">Create icons for gVim executables on the desktop.</String>
-  <String Id="Feature_Popup_Title" Overridable="yes">Edit-with-Vim Context Menu</String>
-  <String Id="Feature_Popup_Description" Overridable="yes">Install the Edit-with-Vim context menu entry.</String>
-  <String Id="Feature_OpenWith_TItle" Overridable="yes">"Open With ..." Context Menu</String>
-  <String Id="Feature_OpenWith_Description" Overridable="yes">Add Vim to the "Open With..." context menu list.</String>
+  <String Id="Feature_DesktopShortcut_Description" Overridable="yes">Create icons on the Desktop.</String>
+  <String Id="Feature_Popup_Title" Overridable="yes">Edit-with-Vim context menu</String>
+  <String Id="Feature_Popup_Description" Overridable="yes">Add an Edit-with-Vim context menu entry.</String>
   <String Id="Feature_PathEnvironment_Title" Overridable="yes">PATH Environment Variable</String>
   <String Id="Feature_PathEnvironment_Description" Overridable="yes">Add Vim's directory to PATH environment variable.</String>
+  <String Id="Feature_VisVim_Title" Overridable="yes">VisVim</String>
+  <String Id="Feature_VisVim_Description" Overridable="yes">VisVim Extension for MS Visual Studio.</String>
 </WixLocalization>
