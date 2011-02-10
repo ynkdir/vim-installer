@@ -32,12 +32,16 @@ exit /b
 
 
 :COMPILE
+  SET DEFINES=
+  SET DEFINES=%DEFINES% -DGETTEXT_DLL=\\\"intl.dll\\"
+  REM SET DEFINES=%DEFINES% -DDYNAMIC_ICONV_DLL=\\\"iconv.dll\\\"
+  REM SET DEFINES=%DEFINES% -DDYNAMIC_ICONV_DLL_ALT=\\\"libiconv.dll\\\"
   pushd vim\src
-  nmake -f Make_mvc.mak USE_MSVCRT=1 FEATURES=HUGE MBYTE=yes
+  nmake -f Make_mvc.mak USE_MSVCRT=1 FEATURES=HUGE MBYTE=yes "DEFINES=%DEFINES%"
   if exist vim.exe.manifest (
     mt -nologo -manifest vim.exe.manifest -outputresource:vim.exe;1
   )
-  nmake -f Make_mvc.mak USE_MSVCRT=1 FEATURES=HUGE MBYTE=yes GUI=yes IME=yes OLE=yes
+  nmake -f Make_mvc.mak USE_MSVCRT=1 FEATURES=HUGE MBYTE=yes GUI=yes IME=yes OLE=yes "DEFINES=%DEFINES%"
   if exist gvim.exe.manifest (
     mt -nologo -manifest gvim.exe.manifest -outputresource:gvim.exe;1
   )
@@ -111,8 +115,7 @@ exit /b
   copy vim\src\gvim.pdb dist
   copy diff\bin\diff.exe dist
   copy iconv\bin\iconv.dll dist
-  REM TODO use -DGETTEXT_DLL=intl.dll, instead of rename.
-  copy gettext\bin\intl.dll dist\libintl.dll
+  copy gettext\bin\intl.dll dist
   exit /b
 
 
