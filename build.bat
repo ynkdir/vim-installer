@@ -17,6 +17,7 @@ exit /b
 :CONFIG
   SET wget=cscript //nologo scripts\httpget.js
   SET unzip=cscript //nologo scripts\unzip.js
+  SET INTLDLL=intl.dll
   exit /b
 
 
@@ -33,9 +34,12 @@ exit /b
 
 :COMPILE
   SET DEFINES=
-  SET DEFINES=%DEFINES% -DGETTEXT_DLL=\\\"intl.dll\\"
+  if "%INTLDLL%" neq "libintl.dll" (
+    SET DEFINES=%DEFINES% -DGETTEXT_DLL=\\\"%INTLDLL%\\\"
+  )
   REM SET DEFINES=%DEFINES% -DDYNAMIC_ICONV_DLL=\\\"iconv.dll\\\"
   REM SET DEFINES=%DEFINES% -DDYNAMIC_ICONV_DLL_ALT=\\\"libiconv.dll\\\"
+
   pushd vim\src
   nmake -f Make_mvc.mak USE_MSVCRT=1 FEATURES=HUGE MBYTE=yes "DEFINES=%DEFINES%"
   if exist vim.exe.manifest (
@@ -46,6 +50,22 @@ exit /b
     mt -nologo -manifest gvim.exe.manifest -outputresource:gvim.exe;1
   )
   popd
+
+  REM WORKAROUND: compile gvimext with -MD and -DGETTEXT_DLL
+  if "%INTLDLL%" neq "libintl.dll" (
+    pushd vim\src\GvimExt
+    ..\vim -u NONE ^
+      -c "%s/cvarsmt/cvarsdll/" ^
+      -c "/!include <win32.mak>/" ^
+      -c "put='cflags = $(cflags) -DGETTEXT_DLL=\\\\\"%INTLDLL\\\\\"'" ^
+      -c "saveas! Makefile2" ^
+      -c "quit" ^
+      Makefile
+    nmake /NOLOG -f Makefile2 clean
+    nmake /NOLOG -f Makefile2
+  )
+  popd
+
   exit /b
 
 
