@@ -15,13 +15,8 @@ exit /b
 
 
 :CONFIG
-  REM TODO
   SET wget=cscript //nologo scripts\httpget.js
   SET unzip=cscript //nologo scripts\unzip.js
-
-  REM compiler flag
-  SET OLE=yes
-
   exit /b
 
 
@@ -42,7 +37,7 @@ exit /b
   if exist vim.exe.manifest (
     mt -nologo -manifest vim.exe.manifest -outputresource:vim.exe;1
   )
-  nmake -f Make_mvc.mak USE_MSVCRT=1 FEATURES=HUGE MBYTE=yes GUI=yes IME=yes OLE=%OLE%
+  nmake -f Make_mvc.mak USE_MSVCRT=1 FEATURES=HUGE MBYTE=yes GUI=yes IME=yes OLE=yes
   if exist gvim.exe.manifest (
     mt -nologo -manifest gvim.exe.manifest -outputresource:gvim.exe;1
   )

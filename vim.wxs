@@ -8,6 +8,7 @@
     - desktop shortcut: Don't use HKCU for per-machine.
     - gvimext.dll: Don't use HKLM for per-user.
     - Restore install configuration for upgrade.
+    - Customize UI?
 
 
   MEMO:
@@ -22,7 +23,7 @@
 
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
 
-  <!-- require $(env.VER_FULL) $(env.VER_SHORT) $(env.FEAT_OLE) -->
+  <!-- require $(env.VER_FULL) $(env.VER_SHORT) -->
 
   <?define ProductVersion = "$(env.VER_FULL)"?>
 
@@ -43,13 +44,13 @@
 
     <Package Id="*" Compressed='yes' />
 
-    <!-- All product having same UpgradeCode will be overridden. -->
+    <!-- All product having same UpgradeCode will be overwritten. -->
     <MajorUpgrade AllowDowngrades="yes" />
 
+    <!-- Information for /Control Panel/Programs/Programs and Features/ -->
     <Property Id="ARPCOMMENTS">Vi Improved - A Text Editor</Property>
     <Property Id="ARPURLINFOABOUT">http://www.vim.org/</Property>
     <Property Id="ARPPRODUCTICON">vim.ico</Property>
-
     <Icon Id="vim.ico" SourceFile="vim\src\vim.ico" />
 
     <Media Id='1' Cabinet='product.cab' EmbedCab='yes' CompressionLevel="high" />
@@ -68,10 +69,10 @@
 
     <DirectoryRef Id="INSTALLDIR">
       <Component Id="gvim.exe" Guid="*">
-        <File Id="gvim.exe" KeyPath="yes" Source="$(var.dist)\gvim.exe">
+        <File KeyPath="yes" Source="$(var.dist)\gvim.exe">
 
           <!-- FIXME: How to separate Component to make TypeLib register optional? -->
-          <?if $(env.FEAT_OLE) = 1?>
+          <!-- OLE interface -->
           <!-- Same as gvim.exe -register. -->
           <!-- HKCR\TypeLib\{Id} -->
           <TypeLib Id="{0F0BFAE0-4C90-11D1-82D7-0004AC368519}" Description="Vim OLE Interface 1.1 Type Library" Language="0" MajorVersion="1" MinorVersion="1" HelpDirectory="INSTALLDIR">
@@ -85,7 +86,6 @@
               </ProgId>
             </Class>
           </TypeLib>
-          <?endif?>
 
         </File>
       </Component>
@@ -93,7 +93,7 @@
 
     <DirectoryRef Id="INSTALLDIR">
       <Component Id="gvimext.dll" Guid="*">
-        <File Id="gvimext.dll" KeyPath="yes" Source="$(var.dist)\gvimext.dll">
+        <File KeyPath="yes" Source="$(var.dist)\gvimext.dll">
           <Class Id="{51EEE242-AD87-11d3-9C1E-0090278BBD99}" Description="Vim Shell Extension" Context="InprocServer32" ThreadingModel="apartment">
           </Class>
         </File>
@@ -107,7 +107,7 @@
     <DirectoryRef Id="INSTALLDIR">
       <!-- FIXME: NOT TESTED -->
       <Component Id="VisVim.dll" Guid="*">
-        <File Id="VisVim.dll" KeyPath="yes" Source="$(var.dist)\VisVim.dll">
+        <File KeyPath="yes" Source="$(var.dist)\VisVim.dll">
           <!-- Same as regsvr32.exe VisVim.dll -->
           <Class Id="{4F9E01C0-406B-11D2-8006-00001C405077}" Description="Vim Developer Studio Add-In" Context="InprocServer32" ThreadingModel="both">
             <!-- FIXME: With regsvr32.exe,
@@ -121,7 +121,7 @@
         <RegistryValue Root='HKMU' Key='Software\Classes\CLSID\{4F9E01C0-406B-11D2-8006-00001C405077}\Description' Type="string" Value="Allows integration of Vim as the text editor in Developer Studio." />
       </Component>
       <Component Id="README_VisVim.txt" Guid="*">
-        <File Id="README_VisVim.txt" KeyPath="yes" Source="$(var.dist)\README_VisVim.txt" />
+        <File KeyPath="yes" Source="$(var.dist)\README_VisVim.txt" />
       </Component>
     </DirectoryRef>
 
@@ -135,6 +135,8 @@
     </DirectoryRef>
 
     <DirectoryRef Id="INSTALLDIR">
+      <!-- FIXME: How to unify these two Component?
+           Difference is Environment/@System. -->
       <Component Id="PathEnvironmentSys" Guid="147EA001-A6FF-6146-BACB-86277994D96B">
         <Condition>ALLUSERS</Condition>
         <Environment Id='UpdatePathSys' Name='PATH' Action='set' Permanent='no' System='yes' Part='last' Value='[INSTALLDIR]' />
@@ -159,7 +161,7 @@
         <Shortcut Id="StartMenu8" Name="Uninstall" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" />
         <Shortcut Id="StartMenu9" Name="Vim tutor" Target="[INSTALLDIR]vimtutor.bat" WorkingDirectory="INSTALLDIR" />
         <Shortcut Id="StartMenu10" Name="Help" Target="[INSTALLDIR]gvim.exe" Arguments="-c h" WorkingDirectory="INSTALLDIR" />
-        <File Id="Vim_Online.url" Name="Vim Online.url" Source="Vim Online.url" />
+        <File Source="Vim Online.url" />
         <RemoveFolder Id='ApplicationProgramsFolder' On='uninstall' />
         <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="install_startmenu" Type="string" Value="1" KeyPath="yes" />
       </Component>

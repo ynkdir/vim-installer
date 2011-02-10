@@ -28,6 +28,5 @@ endif
 $put ='SET VER_FULL='.full
 $put ='SET VER_SHORT='.short
 $put ='SET VER_NAME='.name
-$put ='SET FEAT_OLE='.has('ole')
 write! version.bat
 quit
