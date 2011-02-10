@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WixLocalization Culture="ja-jp" Codepage="932" xmlns="http://schemas.microsoft.com/wix/2006/localization">
-  <String Id="UpgradeWarning" Overridable="yes">別のバージョンがインストールされています。インストールを継続すると現在インストールされているバージョンは上書きされます。</String>
   <String Id="Feature_Complete_Title" Overridable="yes">Vim</String>
   <String Id="Feature_Complete_Description" Overridable="yes">Vi Improved - A Text Editor</String>
   <String Id="Feature_StartMenu_Title" Overridable="yes">スタートメニュー</String>
@@ -12,5 +11,5 @@
   <String Id="Feature_PathEnvironment_Title" Overridable="yes">PATH 環境変数</String>
   <String Id="Feature_PathEnvironment_Description" Overridable="yes">Vim のディレクトリを PATH 環境変数に追加する。</String>
   <String Id="Feature_VisVim_Title" Overridable="yes">VisVim</String>
-  <String Id="Feature_VisVim_Description" Overridable="yes">VisVim Extension for MS Visual Studio</String>
+  <String Id="Feature_VisVim_Description" Overridable="yes">MS Visual Studio 用の VisVim プラグイン。</String>
 </WixLocalization>

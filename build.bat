@@ -39,6 +39,7 @@ exit /b
   )
   REM SET DEFINES=%DEFINES% -DDYNAMIC_ICONV_DLL=\\\"iconv.dll\\\"
   REM SET DEFINES=%DEFINES% -DDYNAMIC_ICONV_DLL_ALT=\\\"libiconv.dll\\\"
+  REM SET DEFINES=%DEFINES% -DDYNAMIC_MSVCRT_DLL=\\\"msvcrt.dll\\\"
 
   pushd vim\src
   nmake -f Make_mvc.mak USE_MSVCRT=1 FEATURES=HUGE MBYTE=yes "DEFINES=%DEFINES%"
@@ -71,7 +72,11 @@ exit /b
 
 :PO
   pushd vim\src\po
-  ..\vim -u NONE -c "g/^GETTEXT_PATH/s/.*/GETTEXT_PATH = ..\\..\\..\\gettext\\bin" -c "saveas! Make_mvc.mak2" -c "quit" Make_mvc.mak
+  ..\vim -u NONE ^
+    -c "g/^GETTEXT_PATH/s/.*/GETTEXT_PATH = ..\\..\\..\\gettext\\bin" ^
+    -c "saveas! Make_mvc.mak2" ^
+    -c "quit" ^
+    Make_mvc.mak
   nmake -f Make_mvc.mak2
   popd
   exit /b
@@ -163,7 +168,7 @@ exit /b
 
 :WIX
   REM [Automation Interface Reference]
-  REM http://msdn.microsoft.com/en-us/library/aa367810%28v=VS.85%29.aspx
+  REM http://msdn.microsoft.com/en-us/library/aa367810.aspx
   REM [Multi-Language MSI Packages without Setup.exe Launcher]
   REM http://www.installsite.org/pages/en/msi/articles/embeddedlang/index.htm
 
@@ -188,10 +193,10 @@ exit /b
   move README_VisVim.txt dist
 
   candle.exe -nologo -ddist=dist -dlang=1033 -dcodepage=1252 %SRCS%
-  light.exe -nologo -ext WixUIExtension -cultures:en-us -loc loc_en-us.wxl -out %TARGET% -sw1076 %OBJS%
+  light.exe -nologo -ext WixUIExtension -cultures:en-us -loc loc_en-us.wxl -out %TARGET% %OBJS%
 
   candle.exe -nologo -ddist=dist -dlang=1041 -dcodepage=932 %SRCS%
-  light.exe -nologo -ext WixUIExtension -cultures:ja-jp -loc loc_ja-jp.wxl -out ja-jp.msi -sw1076 %OBJS%
+  light.exe -nologo -ext WixUIExtension -cultures:ja-jp -loc loc_ja-jp.wxl -out ja-jp.msi %OBJS%
   torch.exe -nologo -p -t language %TARGET% ja-jp.msi -out ja-jp.mst
 
   cscript //nologo msiscripts\WiSubStg.vbs %TARGET% ja-jp.mst 1041

@@ -1,15 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 
 <!--
-  FIXME: How not to mix HKCU and HKLM?
-
   TODO:
-    - start menu: Don't use HKCU for per-machine.
-    - desktop shortcut: Don't use HKCU for per-machine.
-    - gvimext.dll: Don't use HKLM for per-user.
+    - gvimext.dll: Don't use HKLM for per-user install.
     - Restore install configuration for upgrade.
-    - Customize UI?
-
+    - Customize UI?  Use checkbox instead of feature tree.
+    - Select per-user or per-machine install.  Use WixUI_Advanced?
+      With command line:
+         per-user:  $ msiexec /i vim.msi              (default)
+      per-machine:  $ msiexec /i vim.msi ALLUSERS=1
+    - Solve all error and warning.  It seems that ICE57 validation is
+      not seems to be respected.
+    - Because of if_ole, gvimext.dll and etc, we can not install
+      multiple version of Vim.
 
   MEMO:
     Place of shortcut (vista):
@@ -163,7 +166,7 @@
         <Shortcut Id="StartMenu10" Name="Help" Target="[INSTALLDIR]gvim.exe" Arguments="-c h" WorkingDirectory="INSTALLDIR" />
         <File Source="Vim Online.url" />
         <RemoveFolder Id='ApplicationProgramsFolder' On='uninstall' />
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="install_startmenu" Type="string" Value="1" KeyPath="yes" />
+        <RegistryValue Root='HKMU' Key='Software\Vim\install' Name="install_startmenu" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
@@ -172,7 +175,7 @@
         <Shortcut Id="DesktopShortcut1" Name="gVim" Target="[INSTALLDIR]gvim.exe" WorkingDirectory="INSTALLDIR" />
         <Shortcut Id="DesktopShortcut2" Name="gVim Easy" Target="[INSTALLDIR]gvim.exe" Arguments="-y" WorkingDirectory="INSTALLDIR" />
         <Shortcut Id="DesktopShortcut3" Name="gVim Read only" Target="[INSTALLDIR]gvim.exe" Arguments="-R" WorkingDirectory="INSTALLDIR" />
-        <RegistryValue Root='HKCU' Key='Software\Vim\install' Name="install_desktop_shortcut" Type="string" Value="1" KeyPath="yes" />
+        <RegistryValue Root='HKMU' Key='Software\Vim\install' Name="install_desktop_shortcut" Type="string" Value="1" KeyPath="yes" />
       </Component>
     </DirectoryRef>
 
@@ -205,28 +208,6 @@
 
     <UIRef Id="WixUI_Mondo" />
     <UIRef Id="WixUI_ErrorProgressText" />
-
-    <Property Id="MyScript">
-      <![CDATA[
-      Function Rec(msg)
-        Set oRec = Installer.CreateRecord(0)
-        oRec.StringData(0) = msg
-        Set Rec = oRec
-      End Function
-      Function UpgradeWarning()
-        msg = Session.FormatRecord(Rec("!(loc.UpgradeWarning)"))
-        Session.Message &H03000000, Rec(msg)
-      End Function
-      ]]>
-    </Property>
-
-    <CustomAction Id="UpgradeWarning" Property="MyScript" VBScriptCall="UpgradeWarning" />
-
-    <UI>
-      <InstallUISequence>
-        <Custom Action="UpgradeWarning" After="FindRelatedProducts">WIX_UPGRADE_DETECTED</Custom>
-      </InstallUISequence>
-    </UI>
 
   </Product>
 </Wix>

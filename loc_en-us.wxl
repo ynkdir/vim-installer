@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- FIXME: english -->
 <WixLocalization Culture="en-us" Codepage="1252" xmlns="http://schemas.microsoft.com/wix/2006/localization">
-  <String Id="UpgradeWarning" Overridable="yes">Different version is installed.  This installation will replace it.</String>
   <String Id="Feature_Complete_Title" Overridable="yes">Vim</String>
   <String Id="Feature_Complete_Description" Overridable="yes">Vi Improved - A Text Editor</String>
   <String Id="Feature_StartMenu_Title" Overridable="yes">Start Menu Shortcut</String>

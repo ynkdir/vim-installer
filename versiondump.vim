@@ -14,15 +14,17 @@ let beta = empty(m) ? '' : m[1]
 
 let full = printf('%d.%d.%d.%d', major, minor, patch, revision)
 let short = printf('%d.%d', major, minor)
+let bit = has('win64') ? 'win64' : 'win32'
+
 if beta == ""
   if patch == 0
-    let name = printf('%d.%d', major, minor)
+    let name = printf('%d.%d-%s', major, minor, bit)
   else
-    let name = printf('%d.%d.%03d', major, minor, patch)
+    let name = printf('%d.%d.%03d-%s', major, minor, patch, bit)
   endif
 else
   " FIXME
-  let name = printf('%d.%d%s-r%d', major, minor, beta, revision)
+  let name = printf('%d.%d%s-r%d-%s', major, minor, beta, revision, bit)
 endif
 
 $put ='SET VER_FULL='.full
