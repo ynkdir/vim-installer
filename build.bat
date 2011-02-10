@@ -57,7 +57,7 @@ exit /b
     ..\vim -u NONE ^
       -c "%%s/cvarsmt/cvarsdll/" ^
       -c "/!include <win32.mak>/" ^
-      -c "put='cflags = $(cflags) -DGETTEXT_DLL=\\\\\"%INTLDLL\\\\\"'" ^
+      -c "put='cflags = $(cflags) -DGETTEXT_DLL=\\\\\"%INTLDLL%\\\\\"'" ^
       -c "saveas! Makefile2" ^
       -c "quit" ^
       Makefile
