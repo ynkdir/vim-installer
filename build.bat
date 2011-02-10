@@ -55,7 +55,7 @@ exit /b
   if "%INTLDLL%" neq "libintl.dll" (
     pushd vim\src\GvimExt
     ..\vim -u NONE ^
-      -c "%s/cvarsmt/cvarsdll/" ^
+      -c "%%s/cvarsmt/cvarsdll/" ^
       -c "/!include <win32.mak>/" ^
       -c "put='cflags = $(cflags) -DGETTEXT_DLL=\\\\\"%INTLDLL\\\\\"'" ^
       -c "saveas! Makefile2" ^
