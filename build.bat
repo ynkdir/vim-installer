@@ -139,6 +139,28 @@ exit /b
   exit /b
 
 
+:VIMLICENSE
+  REM cd vim\runtime\doc && make uganda.nsis.txt
+  vim\src\vim -u NONE ^
+    -c "%%s/[ 	]*\*[-a-zA-Z0-9.]*\*//g" ^
+    -c "%%s/vim:tw=78://" ^
+    -c "g/$/if getline(line('.')) == getline(line('.') + 1) | delete _ | endif" ^
+    -c "saveas! vimlicense.rtf" ^
+    -c "quit" ^
+    vim\runtime\doc\uganda.txt
+  REM convert to rtf
+  vim\src\vim -u NONE ^
+    -c "%%s/$/\\par/" ^
+    -c "%%s/\t\+/\=repeat('\tab', len(submatch(0))) . ' '/g" ^
+    -c "0put='{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset1 Arial;}}\f0\fs16'" ^
+    -c "join!" ^
+    -c "$put='}'" ^
+    -c "write!" ^
+    -c "quit" ^
+    vimlicense.rtf
+  exit /b
+
+
 :WIX
   REM [Automation Interface Reference]
   REM http://msdn.microsoft.com/en-us/library/aa367810%28v=VS.85%29.aspx
@@ -187,6 +209,7 @@ exit /b
   call :COMPILE
   call :PO
   call :DIST
+  call :VIMLICENSE
   call :WIX
   exit /b
 
