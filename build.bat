@@ -61,10 +61,10 @@ exit /b
       -c "saveas! Makefile2" ^
       -c "quit" ^
       Makefile
-    nmake /NOLOG -f Makefile2 clean
-    nmake /NOLOG -f Makefile2
+    nmake -f Makefile2 clean
+    nmake -f Makefile2
+    popd
   )
-  popd
 
   exit /b
 
