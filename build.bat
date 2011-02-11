@@ -158,7 +158,6 @@ exit /b
     -c "%%s/$/\\par/" ^
     -c "%%s/\t\+/\=repeat('\tab', len(submatch(0))) . ' '/g" ^
     -c "0put='{\rtf1\ansi\deff0{\fonttbl{\f0\fnil\fcharset1 Arial;}}\f0\fs16'" ^
-    -c "join!" ^
     -c "$put='}'" ^
     -c "write!" ^
     -c "quit" ^
