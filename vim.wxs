@@ -105,6 +105,9 @@
         <!-- used by gvimext.dll -->
         <RegistryValue Root='HKLM' Key='Software\Vim\Gvim' Name="path" Type="string" Value="[INSTALLDIR]gvim.exe" />
       </Component>
+      <Component Id="DisableEditWithExisting" Guid="A34DC79F-6E2C-4df5-AA57-1BD6EA974F9E">
+        <RegistryValue Root="HKLM" Key="Software\Vim\Gvim" Name="DisableEditWithExisting" Type="string" Value="1" />
+      </Component>
     </DirectoryRef>
 
     <DirectoryRef Id="INSTALLDIR">
@@ -188,9 +191,12 @@
       <Feature Id="DesktopShortcut" Title="!(loc.Feature_DesktopShortcut_Title)" Description="!(loc.Feature_DesktopShortcut_Description)" Level="1">
         <ComponentRef Id="DesktopShortcut" />
       </Feature>
-      <Feature Id="Popup" Title="!(loc.Feature_Popup_Title)" Description="!(loc.Feature_Popup_Description)" Level="1">
+      <Feature Id="PopupOpenWith" Title="!(loc.Feature_Popup_Title)" Description="!(loc.Feature_Popup_Description)" Level="1">
         <ComponentRef Id="gvimext.dll" />
         <ComponentRef Id="OpenWith" />
+        <Feature Id="DisableEditWithExisting" Title="!(loc.Feature_DisableEditWithExisting)" Description="!(loc.Feature_DisableEditWithExisting_Description)" Level="1000">
+          <ComponentRef Id="DisableEditWithExisting" />
+        </Feature>
       </Feature>
       <Feature Id="VisVim" Title="!(loc.Feature_VisVim_Title)" Description="!(loc.Feature_VisVim_Description)" Level="1">
         <ComponentRef Id="VisVim.dll" />

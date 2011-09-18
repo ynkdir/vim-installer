@@ -13,4 +13,6 @@
   <String Id="Feature_PathEnvironment_Description" Overridable="yes">Add Vim's directory to PATH environment variable.</String>
   <String Id="Feature_VisVim_Title" Overridable="yes">VisVim</String>
   <String Id="Feature_VisVim_Description" Overridable="yes">VisVim Extension for MS Visual Studio.</String>
+  <String Id="Feature_DisableEditWithExisting" Overridable="yes">Disable 'edit edit with existing Vim' menu entries.</String>
+  <String Id="Feature_DisableEditWithExisting_Description" Overridable="yes">Disable 'edit edit with existing Vim' menu entries.</String>
 </WixLocalization>

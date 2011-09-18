@@ -12,4 +12,6 @@
   <String Id="Feature_PathEnvironment_Description" Overridable="yes">Vim のディレクトリを PATH 環境変数に追加する。</String>
   <String Id="Feature_VisVim_Title" Overridable="yes">VisVim</String>
   <String Id="Feature_VisVim_Description" Overridable="yes">MS Visual Studio 用の VisVim プラグイン。</String>
+  <String Id="Feature_DisableEditWithExisting" Overridable="yes">'既存のVimで編集する' メニューを無効化する。</String>
+  <String Id="Feature_DisableEditWithExisting_Description" Overridable="yes">'既存のVimで編集する' メニューを無効化する。</String>
 </WixLocalization>
