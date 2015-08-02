@@ -54,7 +54,7 @@
     <Property Id="ARPCOMMENTS">Vi Improved - A Text Editor</Property>
     <Property Id="ARPURLINFOABOUT">http://www.vim.org/</Property>
     <Property Id="ARPPRODUCTICON">vim.ico</Property>
-    <Icon Id="vim.ico" SourceFile="vim\src\vim.ico" />
+    <Icon Id="vim.ico" SourceFile="bitmaps\vim.ico" />
 
     <Media Id='1' Cabinet='product.cab' EmbedCab='yes' CompressionLevel="high" />
 

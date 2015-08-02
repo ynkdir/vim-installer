@@ -1,10 +1,7 @@
 let major = v:version / 100
 let minor = v:version % 100
 let patch = get(filter(range(1000), 'has("patch".v:val)'), -1, 0)
-
-cd vim
-let revision = str2nr(split(system('hg log -r tip'), ':')[1])
-cd ..
+let revision = 0
 
 redir => buf
 silent version
@@ -14,17 +11,17 @@ let beta = empty(m) ? '' : m[1]
 
 let full = printf('%d.%d.%d.%d', major, minor, patch, revision)
 let short = printf('%d.%d', major, minor)
-let bit = has('win64') ? 'win64' : 'win32'
+let arch = has('win64') ? 'win64' : 'win32'
 
 if beta == ""
   if patch == 0
-    let name = printf('%d.%d-%s', major, minor, bit)
+    let name = printf('%d.%d-%s', major, minor, arch)
   else
-    let name = printf('%d.%d.%03d-%s', major, minor, patch, bit)
+    let name = printf('%d.%d.%03d-%s', major, minor, patch, arch)
   endif
 else
   " FIXME
-  let name = printf('%d.%d%s-r%d-%s', major, minor, beta, revision, bit)
+  let name = printf('%d.%d%s-r%d-%s', major, minor, beta, revision, arch)
 endif
 
 $put ='SET VER_FULL='.full
