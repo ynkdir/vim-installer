@@ -12,12 +12,17 @@ REM   extra    Extra directory contains extra files such as iconv.dll, ...etc.
 
 setlocal
 
+if %1x == x (
+  echo usage: build.bat vim [extra]
+  goto :EOF
+)
+
 set VIM=%~f1
 set EXTRA=%~f2
 
-echo "-------------------------------------------------------------------------"
-echo "COPY VIM FILES"
-echo "-------------------------------------------------------------------------"
+REM ----------------------------------------------------------------------------
+REM COPY VIM FILES
+REM ----------------------------------------------------------------------------
 
 robocopy /MIR %VIM%\runtime dist
 for %%i in (%VIM%\src\po\*.mo) do (
@@ -36,17 +41,17 @@ copy %VIM%\README.txt dist
 copy %VIM%\src\vim.pdb dist
 copy %VIM%\src\gvim.pdb dist
 
-echo "-------------------------------------------------------------------------"
-echo "COPY EXTRA FILES"
-echo "-------------------------------------------------------------------------"
+REM ----------------------------------------------------------------------------
+REM COPY EXTRA FILES
+REM ----------------------------------------------------------------------------
 
 if %EXTRA%x == x goto EXTRAEND
 if exist %EXTRA% robocopy /E %EXTRA% dist
 :EXTRAEND
 
-echo "-------------------------------------------------------------------------"
-echo "VIMLICENSE.RTF"
-echo "-------------------------------------------------------------------------"
+REM ----------------------------------------------------------------------------
+REM VIMLICENSE.RTF
+REM ----------------------------------------------------------------------------
 
 copy %VIM%\runtime\doc\uganda.txt vimlicense.rtf
 
@@ -67,9 +72,9 @@ REM convert to rtf
   -c "wq!" ^
   vimlicense.rtf
 
-echo "-------------------------------------------------------------------------"
-echo "BUILD MSI INSTALLER"
-echo "-------------------------------------------------------------------------"
+REM ----------------------------------------------------------------------------
+REM BUILD MSI INSTALLER
+REM ----------------------------------------------------------------------------
 
 REM [Automation Interface Reference]
 REM http://msdn.microsoft.com/en-us/library/aa367810.aspx
