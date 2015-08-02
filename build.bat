@@ -40,7 +40,7 @@ echo "-------------------------------------------------------------------------"
 echo "COPY EXTRA FILES"
 echo "-------------------------------------------------------------------------"
 
-if %EXTRA%x==x goto EXTRAEND
+if %EXTRA%x == x goto EXTRAEND
 if exist %EXTRA% robocopy /E %EXTRA% dist
 :EXTRAEND
 
@@ -79,6 +79,12 @@ REM http://www.installsite.org/pages/en/msi/articles/embeddedlang/index.htm
 %VIM%\src\vim -u versiondump.vim
 call version.bat
 
+if %VER_ARCH% == win64 (
+  set CANDLE_64BIT_FLAG=-darch=x64 -arch x64
+) else (
+  set CANDLE_64BIT_FLAG=
+)
+
 set SRCS=vim.wxs filelist.wxs
 set OBJS=vim.wixobj filelist.wixobj
 set TARGET=vim-%VER_NAME%.msi
@@ -96,11 +102,11 @@ move gvimext.dll dist
 move VisVim.dll dist
 move README_VisVim.txt dist
 
-candle.exe -nologo -ddist=dist -dlang=1033 -dcodepage=1252 -darch=x64 -arch x64 %SRCS%
+candle.exe -nologo -ddist=dist -dlang=1033 -dcodepage=1252 %CANDLE_64BIT_FLAG% %SRCS%
 light.exe -nologo -ext WixUIExtension -cultures:en-us -loc loc_en-us.wxl -out %TARGET% %OBJS%
 
 REM Japanese
-candle.exe -nologo -ddist=dist -dlang=1041 -dcodepage=932 -darch=x64 -arch x64 %SRCS%
+candle.exe -nologo -ddist=dist -dlang=1041 -dcodepage=932 %CANDLE_64BIT_FLAG% %SRCS%
 light.exe -nologo -ext WixUIExtension -cultures:ja-jp -loc loc_ja-jp.wxl -out ja-jp.msi %OBJS%
 torch.exe -nologo -p -t language %TARGET% ja-jp.msi -out ja-jp.mst
 cscript //nologo msiscripts\WiSubStg.vbs %TARGET% ja-jp.mst 1041

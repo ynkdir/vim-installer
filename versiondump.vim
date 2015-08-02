@@ -27,5 +27,6 @@ endif
 $put ='SET VER_FULL='.full
 $put ='SET VER_SHORT='.short
 $put ='SET VER_NAME='.name
+$put ='SET VER_ARCH='.arch
 write! version.bat
 quit
