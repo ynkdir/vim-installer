@@ -96,11 +96,11 @@ move gvimext.dll dist
 move VisVim.dll dist
 move README_VisVim.txt dist
 
-candle.exe -nologo -ddist=dist -dlang=1033 -dcodepage=1252 %SRCS%
+candle.exe -nologo -ddist=dist -dlang=1033 -dcodepage=1252 -darch=x64 -arch x64 %SRCS%
 light.exe -nologo -ext WixUIExtension -cultures:en-us -loc loc_en-us.wxl -out %TARGET% %OBJS%
 
 REM Japanese
-candle.exe -nologo -ddist=dist -dlang=1041 -dcodepage=932 %SRCS%
+candle.exe -nologo -ddist=dist -dlang=1041 -dcodepage=932 -darch=x64 -arch x64 %SRCS%
 light.exe -nologo -ext WixUIExtension -cultures:ja-jp -loc loc_ja-jp.wxl -out ja-jp.msi %OBJS%
 torch.exe -nologo -p -t language %TARGET% ja-jp.msi -out ja-jp.mst
 cscript //nologo msiscripts\WiSubStg.vbs %TARGET% ja-jp.mst 1041
