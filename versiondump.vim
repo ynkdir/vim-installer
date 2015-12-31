@@ -1,6 +1,6 @@
 let major = v:version / 100
 let minor = v:version % 100
-let patch = get(filter(range(1000), 'has("patch".v:val)'), -1, 0)
+let patch = get(filter(range(10000), 'has("patch".v:val)'), -1, 0)
 let revision = 0
 
 redir => buf
