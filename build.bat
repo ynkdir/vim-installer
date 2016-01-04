@@ -35,6 +35,7 @@ copy %VIM%\src\vim.exe dist
 copy %VIM%\src\gvim.exe dist
 copy %VIM%\src\vimrun.exe dist
 copy %VIM%\src\xxd\xxd.exe dist
+copy %VIM%\src\tee\tee.exe dist
 copy %VIM%\src\GvimExt\gvimext.dll dist
 copy %VIM%\src\VisVim\VisVim.dll dist
 copy %VIM%\src\VisVim\README_VisVim.txt dist
